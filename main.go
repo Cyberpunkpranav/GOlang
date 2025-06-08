@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	todo "go-server/utils"
 	"log"
 	"net/http"
 	"strconv"
@@ -56,7 +55,7 @@ func handlerfb(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 func main() {
-	todo.Todo()
+	// todo.Todo()
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/fizz-buzz", handlerfb)
 	err := http.ListenAndServe(":8000", nil)
