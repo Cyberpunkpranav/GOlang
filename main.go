@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	webhook "go-server/webhooks"
 )
 
 func FizzBuzz(n int) map[int]string {
@@ -55,19 +56,6 @@ func handlerfb(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(string(jsonData))
 	w.Write(jsonData)
 }
-func verifyWebhook(w http.ResponseWriter, r *http.Request) {
-	mode := r.URL.Query().Get("hub.mode")
-	token := r.URL.Query().Get("hub.verify_token")
-	challenge := r.URL.Query().Get("hub.challenge")
-
-	if mode == "subscribe" && token == "practicewebhoook" {
-		fmt.Fprint(w, challenge)
-		log.Println("Webhook verified successfully.")
-	} else {
-		http.Error(w, "Verification failed", http.StatusForbidden)
-		log.Println("Webhook verification failed.")
-	}
-}
 
 func main() {
 	port := os.Getenv("PORT") // Get the port from Render environment
@@ -77,7 +65,7 @@ func main() {
 	// todo.Todo()
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/fizz-buzz", handlerfb)
-	http.HandleFunc("/whatsapp/webhook", verifyWebhook)
+	http.HandleFunc("/whatsapp/webhook", webhook.WhatsAppWebhook)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal(err.Error())
