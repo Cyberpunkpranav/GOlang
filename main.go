@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -55,10 +56,14 @@ func handlerfb(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 func main() {
+	port := os.Getenv("PORT") // Get the port from Render environment
+	if port == "" {
+		port = "8000" // Use 8000 for local testing
+	}
 	// todo.Todo()
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/fizz-buzz", handlerfb)
-	err := http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
