@@ -3,11 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"os"
 	"strconv"
-	webhook "go-server/webhooks"
+	"sync"
 )
 
 func FizzBuzz(n int) map[int]string {
@@ -57,18 +55,52 @@ func handlerfb(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-func main() {
-	port := os.Getenv("PORT") // Get the port from Render environment
-	if port == "" {
-		port = "8000" // Use 8000 for local testing
-	}
-	// todo.Todo()
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/fizz-buzz", handlerfb)
-	http.HandleFunc("/whatsapp/webhook", webhook.WhatsAppWebhook)
-	err := http.ListenAndServe(":"+port, nil)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+// port := os.Getenv("PORT") // Get the port from Render environment
+//
+//	if port == "" {
+//		port = "8000" // Use 8000 for local testing
+//	}
+//
+// // todo.Todo()
+// http.HandleFunc("/", handler)
+// http.HandleFunc("/fizz-buzz", handlerfb)
+// http.HandleFunc("/whatsapp/webhook", webhook.WhatsAppWebhook)
+// err := http.ListenAndServe(":"+port, nil)
+//
+//	if err != nil {
+//		log.Fatal(err.Error())
+//	}
+// func function1(value int) {
+// 	log.Printf("Printing value of funtion2 in function1 : %d", value)
+// }
+// func function2(value int) {
+// 	log.Printf("Printing value of funtion1 in function2 :  %d", value)
+// }
+// func main() {
 
+// 	channel := make(chan int)
+// 	go func() {
+// 		channel <- 1
+// 		channel <- 2
+// 		close(channel)
+// 	}()
+// 	val1 := <-channel
+// 	val2 := <-channel
+// 	go function1(val2)
+// 	go function2(val1)
+// 	select {}
+
+// }
+
+func sayHello(wg *sync.WaitGroup) {
+	defer wg.Done()
+	fmt.Println("Hello from goroutine!")
+}
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go sayHello(&wg)
+	wg.Wait()
+	// time.Sleep(time.Second) // wait for goroutine to finish
+	fmt.Println("Main ends")
 }
