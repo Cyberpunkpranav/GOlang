@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	pgDB "go-server/database"
+	webhook "go-server/webhooks"
 	"log"
 	"net/http"
 	"os"
@@ -16,6 +17,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	appEnv := "local"
 	// appEnv := os.Getenv("APP_ENV")
+	http.HandleFunc("/whatsapp/webhook", webhook.WhatsAppWebhook)
 
 	pgDB.ConnectPostgreSql()
 	http.HandleFunc("/", handler)

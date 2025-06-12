@@ -17,7 +17,7 @@ func WhatsAppWebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println("📥 Incoming webhook payload:")
-	log.Println(string(bodyBytes)) // ✅ This prints the actual JSON
+	log.Println(string(bodyBytes))
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(bodyBytes)

@@ -8,13 +8,11 @@ type User struct {
 	Email     string    `pg:"email,unique"`
 	Age       int       `pg:"age"`
 	Picture   string    `pg:"picture"`
-	IAT       int32     `pg:"iat"`
-	EXP       int32     `pg:"exp"`
+	Iat       int32     `pg:"iat"`
+	Exp       int32     `pg:"exp"`
 	CreatedAt time.Time `pg:"created_at,default:now()"`
 }
-type UserDetails struct {
+type UserOtherDetails struct {
 	Id int32
-}
-type Places struct {
-	Id int16 `pg:"id,pk"`
+
 }
